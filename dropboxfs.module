@@ -37,6 +37,33 @@ function dropboxfs_libraries_info() {
   );
 }
 
+/**
+ * Implements hook_menu().
+ */
+function dropboxfs_menu() {
+  $items['admin/config/media/dropboxfs/settings'] = array(
+    'title' => 'Dropbox File System Settings',
+    'description' => 'Configure Dropbox File System settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dropboxfs_settings'),
+    'access arguments' => array('administer dropboxfs'),
+    'file' => 'dropboxfs.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function dropboxfs_permission() {
+  return array(
+    'administer dropboxfs' => array(
+      'title' => t('Administer Dropbox File System'),
+    ),
+  );
+}
+
 function _dropboxfs_xautoload($api) {
   return $api->namespaceRoot("Dropbox", "lib");
 }

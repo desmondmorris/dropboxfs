@@ -70,3 +70,10 @@ function dropboxfs_requirements($phase) {
 
   return $requirements;
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function dropboxfs_uninstall() {
+  variable_del('dropboxfs_access_token');
+}
