@@ -1,0 +1,6 @@
+name = Dropbox FS
+description = File system integration for Dropbox
+core = 7.x
+
+files[] = DropboxFSStreamWrapper.inc
+files[] = dropboxfs.test

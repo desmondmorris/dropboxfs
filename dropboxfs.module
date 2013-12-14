@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Provides file system integration for Dropbox.
+ */
+
+/**
+ * Implements hook_stream_wrappers().
+ */
+function dropboxfs_stream_wrappers() {
+  return array(
+    'dropboxfs' => array(
+      'name' => 'Dropbox File System',
+      'class' => 'DropboxFSStreamWrapper',
+      'description' => t('Dropbox Storage'),
+    ),
+  );
+}
