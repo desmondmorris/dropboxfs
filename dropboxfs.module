@@ -32,11 +32,11 @@ function dropboxfs_libraries_info() {
         'pattern' => "/([0-9]*\.[0-9]*\.[0-9]*)/",
         'lines' => 2,
       ),
-      'files' => array(
-        'php' => array(
-          'lib/Dropbox/autoload.php',
-        ),
-      ),
+      'xautoload' => '_dropboxfs_xautoload'
     ),
   );
+}
+
+function _dropboxfs_xautoload($api) {
+  return $api->namespaceRoot("Dropbox", "lib");
 }
