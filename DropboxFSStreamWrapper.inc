@@ -3,6 +3,6 @@
 /**
  * The stream wrapper class.
  */
-class DropboxFSStreamWrapper implements DrupalStreamWrapperInterface {
+abstract class DropboxFSStreamWrapper implements DrupalStreamWrapperInterface {
 
 }

@@ -4,3 +4,32 @@
  * @file
  * Install hooks for the Dropbox File System module.
  */
+
+/**
+ * Implements hook_requirements().
+ */
+function dropboxfs_requirements($phase) {
+  $t = get_t();
+
+  if ($phase != 'runtime') {
+    return array();
+  }
+
+  if (function_exists('curl_version')) {
+    $requirements['curl'] = array(
+      'severity' => REQUIREMENT_OK,
+      'title' => $t('CURL'),
+      'value' => $t('Installed and available'),
+    );
+  }
+  else {
+    $requirements['curl'] = array(
+      'severity' => REQUIREMENT_ERROR,
+      'title' => $t('CURL'),
+      'value' => $t('Missing'),
+      'description' => $t('The CURL extension for PHP is not installed.'),
+    );
+  }
+
+  return $requirements;
+}
