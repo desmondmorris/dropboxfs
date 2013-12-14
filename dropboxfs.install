@@ -7,6 +7,8 @@
 
 /**
  * Implements hook_requirements().
+ *
+ * Adapted from s3fs module.
  */
 function dropboxfs_requirements($phase) {
   $t = get_t();
@@ -28,6 +30,41 @@ function dropboxfs_requirements($phase) {
       'title' => $t('CURL'),
       'value' => $t('Missing'),
       'description' => $t('The CURL extension for PHP is not installed.'),
+    );
+  }
+
+  // Check for the Libraries module. This shouldn't really be needed, but if
+  // the user doesn't have Libraries, the error won't be reported correctly.
+  if (!function_exists('libraries_detect')) {
+    $requirements['dropboxfs_libraries'] = array(
+      'title' => $t('Libraries module'),
+      'value' => $t('Not installed.'),
+      'description' => $t('Dropbox File System requires the Libraries module. Please install it from !here.',
+        array('!here' => l('here', 'http://www.drupal.org/project/libraries'))
+      ),
+      'severity' => REQUIREMENT_ERROR,
+    );
+    // Return immediately, since we can't attempt to determine if AWS SDK 2
+    // is installed.
+    return $requirements;
+  }
+
+  $library = libraries_detect('dropbox-sdk-php');
+  if ($library && !empty($library['installed'])) {
+    $requirements['dropboxfs_dropbox-sdk-php'] = array(
+      'title' => $t('Dropbox SDK for PHP'),
+      'value' => $t('Installed @ v@version.', array('@version' => $library['version'])),
+      'severity' => REQUIREMENT_OK,
+    );
+  }
+  else {
+    $requirements['dropboxfs_dropbox-sdk-php'] = array(
+      'title' => $t('Dropbox SDK for PHP'),
+      'value' => $t('The Dropbox File System module requires the Dropbox SDK for PHP library.'),
+      'description' => $t('The Libraries module reported the following error: !error_message<br>
+        Please check the installation instructions for Dropbox File System.', array('!error_message' => filter_xss($library['error message']))
+      ),
+      'severity' => REQUIREMENT_ERROR,
     );
   }
 
